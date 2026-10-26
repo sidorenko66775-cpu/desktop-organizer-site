@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms, Privacy & Refunds — Desktop Organizer</title>
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="legal">
+<div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="grid-lines"></div></div>
+
+<header class="nav scrolled">
+  <a href="index.html" class="brand"><img src="favicon.ico" alt="" width="30" height="30"><span>Desktop&nbsp;Organizer</span></a>
+  <span class="nav-spacer"></span>
+  <nav class="legal-nav"><a href="#terms">Terms</a><a href="#privacy">Privacy</a><a href="#refunds">Refunds</a></nav>
+  <a href="index.html" class="btn btn-ghost btn-sm">← Back to site</a>
+</header>
+
+<main class="legal">
+  <p class="muted">Last updated: October 26, 2026</p>
+
+  <section id="terms">
+    <h1>Terms of Service</h1>
+    <p>Desktop Organizer (“the app”, “we”) is a desktop utility for Windows 10 and 11 that organizes desktop shortcuts into categories and adds a dock, widgets and a custom Start menu. By downloading, activating or using the app you agree to these terms.</p>
+    <h2>License</h2>
+    <ul>
+      <li>When you buy a plan, you receive a personal, non-exclusive, non-transferable license key for the period you paid for: 3 months, 1 year, or lifetime.</li>
+      <li>One key activates the app on one computer. If you replace your computer, contact us and we will move the key.</li>
+      <li>A free 7-day trial is available once per account and once per computer.</li>
+      <li>“Lifetime” means for as long as the app is offered, including all updates.</li>
+    </ul>
+    <h2>Acceptable use</h2>
+    <ul>
+      <li>You may not resell, share publicly, crack, reverse engineer or bypass the license check.</li>
+      <li>We may block a key that is shared, resold or obtained by fraud (for example, after a chargeback).</li>
+    </ul>
+    <h2>Payments</h2>
+    <p>Our order process is conducted by our online reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders. Paddle provides all customer service inquiries and handles returns. Prices are shown in US dollars; taxes may be added at checkout depending on your country. All plans are one-time payments — there are no automatic renewals.</p>
+    <h2>Software provided “as is”</h2>
+    <p>The app is provided “as is”. We work hard to keep it stable and safe, but we do not guarantee that it is error-free or compatible with every system or game. To the maximum extent allowed by law, our liability is limited to the amount you paid for your license.</p>
+    <h2>Changes</h2>
+    <p>We may update these terms. The current version is always on this page.</p>
+  </section>
+
+  <section id="privacy">
+    <h1>Privacy Policy</h1>
+    <h2>What we collect</h2>
+    <ul>
+      <li><b>Account:</b> your email address and an encrypted password (stored by our provider Supabase).</li>
+      <li><b>License:</b> your license key, an anonymous computer identifier (a hash, used to bind the key to one PC), the Windows user and computer name at activation, the app version and the time of the last license check.</li>
+      <li><b>Cloud sync (optional):</b> your app settings — categories, dock, widgets and appearance — so you can restore them on a new PC. The contents of your files are never uploaded.</li>
+      <li><b>Feedback:</b> messages and error reports you choose to send from the app.</li>
+      <li><b>Payments:</b> handled entirely by Paddle.com, our Merchant of Record; we receive your email, the plan and the transaction number, never your card details. See also <a class="grad-link" href="https://www.paddle.com/legal/privacy" target="_blank" rel="noopener">Paddle’s privacy policy</a>.</li>
+    </ul>
+    <h2>What we do not do</h2>
+    <ul>
+      <li>We do not sell your data and do not use advertising trackers.</li>
+      <li>The app does not read the contents of your files, browsing history or other programs’ data.</li>
+    </ul>
+    <h2>Where data is stored</h2>
+    <p>Data is stored with Supabase (database and accounts) and Paddle (payments). The website is hosted on GitHub Pages.</p>
+    <h2>Your rights</h2>
+    <p>You can ask us to show, correct or delete your data and account at any time — contact us using the link below.</p>
+  </section>
+
+  <section id="refunds">
+    <h1>Refund Policy</h1>
+    <ul>
+      <li>Try the app for free for 7 days before buying.</li>
+      <li>If the app doesn’t work for you, you can request a full refund within <b>14 days</b> of purchase — no questions asked.</li>
+      <li>After a refund, the license key is deactivated automatically.</li>
+      <li>To request a refund, use the link in your Paddle receipt email, visit <a class="grad-link" href="https://paddle.net" target="_blank" rel="noopener">paddle.net</a>, or contact us using the link below.</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h1>Contact</h1>
+    <p>Questions, refunds or data requests: <a href="#" data-contact class="grad-link">contact us</a><span id="supportEmail"></span>.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="brand"><img src="favicon.ico" alt="" width="24" height="24"><span>Desktop Organizer</span></div>
+  <span>© <span id="year"></span> Desktop Organizer</span>
+  <a href="index.html">desktop-organizer</a>
+</footer>
+
+<script src="config.js"></script>
+<script>
+  document.querySelectorAll("[data-contact]").forEach(a => { a.href = CONFIG.contactUrl; a.target = "_blank"; a.rel = "noopener"; });
+  if (CONFIG.supportEmail) document.getElementById("supportEmail").innerHTML = ` or email <a class="grad-link" href="mailto:${CONFIG.supportEmail}">${CONFIG.supportEmail}</a>`;
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

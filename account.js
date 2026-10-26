@@ -144,21 +144,38 @@ $("#claimForm").addEventListener("submit", async e => {
   await loadKeys();
 });
 
-// Оплата: посилання Lemon Squeezy з поштою й ID акаунта — після оплати ключ прив'яжеться сам
-function checkoutUrl(plan) {
-  const url = new URL(CONFIG.checkout[plan]);
-  url.searchParams.set("checkout[email]", user.email);
-  url.searchParams.set("checkout[custom][user_id]", user.id);
-  return url.toString();
+// Оплата: вікно Paddle поверх сторінки. Пошта й ID акаунта йдуть у custom_data —
+// після оплати сервер прив'яже ключ до цього акаунта сам
+let paddleReady = false;
+function initPaddle() {
+  if (paddleReady || !CONFIG.paddle.token || !window.Paddle) return paddleReady;
+  if (CONFIG.paddle.token.startsWith("test_")) Paddle.Environment.set("sandbox");
+  Paddle.Initialize({
+    token: CONFIG.paddle.token,
+    eventCallback: e => {
+      // Оплату завершено: ключ видає сервер за кілька секунд — оновлюємо список
+      if (e.name === "checkout.completed") {
+        say($("#dashMsg"), t("Дякуємо за покупку! Ключ з'явиться тут за кілька секунд."), true);
+        [3000, 8000, 15000].forEach(ms => setTimeout(loadKeys, ms));
+      }
+    },
+  });
+  return paddleReady = true;
 }
 function buy(plan) {
-  if (hasCheckout(plan)) location.href = checkoutUrl(plan);
-  else window.open(CONFIG.contactUrl, "_blank", "noopener");
+  if (!hasCheckout(plan) || !initPaddle()) return void window.open(CONFIG.contactUrl, "_blank", "noopener");
+  Paddle.Checkout.open({
+    items: [{ priceId: CONFIG.paddle.prices[plan], quantity: 1 }],
+    customer: { email: user.email },
+    customData: { user_id: user.id, email: user.email },
+    // Мову Paddle визначає сам за браузером покупця
+    settings: { displayMode: "overlay", theme: "dark" },
+  });
 }
 $$(".mini-plan").forEach(b => b.addEventListener("click", () => buy(b.dataset.plan)));
 $$("[data-price]").forEach(el => el.textContent = "$" + CONFIG.prices[el.dataset.price]);
 $$("[data-download]").forEach(a => a.href = CONFIG.downloadUrl);
-if (!Object.keys(CONFIG.checkout).some(hasCheckout)) $("#payNote").textContent = t("Оплата поки вручну: після вибору тарифу напишіть нам — ключ додамо до вашого акаунта.");
+if (!Object.keys(CONFIG.paddle.prices).some(hasCheckout)) $("#payNote").textContent = t("Оплата поки вручну: після вибору тарифу напишіть нам — ключ додамо до вашого акаунта.");
 
 async function render() {
   if (recovering) return show("reset");
@@ -176,7 +193,7 @@ async function render() {
   await loadKeys();
   // Прийшли з кнопки на сайті: одразу виконати дію (лише раз)
   const plan = params.get("buy");
-  if (plan && CONFIG.checkout[plan] !== undefined) { history.replaceState(null, "", "account.html"); buy(plan); }
+  if (plan && CONFIG.paddle.prices[plan] !== undefined) { history.replaceState(null, "", "account.html"); buy(plan); }
   if (params.has("trial") && !keys.some(k => k.is_trial)) { history.replaceState(null, "", "account.html"); $("#trialBtn").click(); }
 }
 
