@@ -7,13 +7,14 @@ const CONFIG = {
   paddle: {
     // Client-side token: Paddle → Developer tools → Authentication. «test_…» — тестовий режим (sandbox), «live_…» — справжні оплати.
     // Цей токен публічний (призначений для сайту). API-ключ і секрет сповіщень сюди НЕ додавати.
-    token: "test_c01908f86bd05c25bb3e2da8286",
+    // Порожньо — оплата вручну через Telegram (contactUrl). Тестовий токен: test_c01908f86bd05c25bb3e2da8286
+    token: "",
     // ID цін («pri_…»): Paddle → Catalog → Products → ціна кожного тарифу
     prices: { quarter: "pri_01m5w7yfdq4kg1szdsz4q35jwd", year: "pri_01m5w7zy0hadnpnkvfrvptg49b", forever: "pri_01m5w817vfa787wsvy7d6tveqe" },
   },
 
   // Куди писати вручну: ваш Telegram, Instagram тощо
-  contactUrl: "https://t.me/your_username",
+  contactUrl: "https://t.me/sidorenko1001",
 
   // Пошта підтримки на сторінці умов (платіжні системи вимагають контакт). Порожньо — не показувати
   supportEmail: "",
