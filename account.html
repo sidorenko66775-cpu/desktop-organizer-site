@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Особистий кабінет — Desktop Organizer</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="account">
+
+<div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="grid-lines"></div></div>
+
+<header class="nav scrolled">
+  <a href="index.html" class="brand"><img src="favicon.ico" alt="" width="30" height="30"><span>Desktop&nbsp;Organizer</span></a>
+  <span class="nav-spacer"></span>
+  <div class="lang" role="group"><button data-lang="uk">UK</button><button data-lang="ru">RU</button><button data-lang="en">EN</button></div>
+  <a href="index.html" class="btn btn-ghost btn-sm">← На сайт</a>
+</header>
+
+<main class="acc">
+  <!-- ============ Вхід / реєстрація ============ -->
+  <section class="acc-card auth" id="authView" hidden>
+    <h1>Особистий кабінет</h1>
+    <p class="muted" id="authHint">Увійдіть, щоб побачити свої ключі, отримати пробний період або купити тариф.</p>
+    <div class="seg" role="tablist">
+      <button class="on" data-mode="in">Вхід</button>
+      <button data-mode="up">Реєстрація</button>
+    </div>
+    <form id="authForm" autocomplete="on">
+      <label><span>Пошта</span><input type="email" id="email" required autocomplete="email"></label>
+      <label id="passWrap"><span>Пароль</span><input type="password" id="password" minlength="8" required autocomplete="current-password"></label>
+      <button class="btn btn-primary btn-block" id="authSubmit" type="submit"><span id="authSubmitText">Увійти</span></button>
+      <button class="link" type="button" id="forgot">Забули пароль?</button>
+    </form>
+    <p class="msg" id="authMsg" role="status"></p>
+  </section>
+
+  <!-- ============ Новий пароль (після листа «Скинути пароль») ============ -->
+  <section class="acc-card auth" id="resetView" hidden>
+    <h1>Новий пароль</h1>
+    <form id="resetForm">
+      <label><span>Новий пароль</span><input type="password" id="newPassword" minlength="8" required autocomplete="new-password"></label>
+      <button class="btn btn-primary btn-block" type="submit">Зберегти пароль</button>
+    </form>
+    <p class="msg" id="resetMsg" role="status"></p>
+  </section>
+
+  <!-- ============ Кабінет ============ -->
+  <section id="dashView" hidden>
+    <div class="acc-head">
+      <div>
+        <h1>Особистий кабінет</h1>
+        <p class="muted"><span id="userEmail" data-no-i18n></span></p>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="signOut">Вийти</button>
+    </div>
+    <p class="msg big" id="dashMsg" role="status"></p>
+
+    <div class="acc-grid">
+      <div class="acc-card">
+        <h2>Мої ключі</h2>
+        <div id="keys" class="keys"></div>
+        <p class="muted" id="noKeys" hidden>Ключів поки немає. Отримайте пробний на 7 днів або оберіть тариф.</p>
+        <form class="claim" id="claimForm">
+          <input id="claimKey" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false" data-no-i18n>
+          <button class="btn btn-ghost btn-sm" type="submit">Додати ключ</button>
+        </form>
+        <p class="muted small">Купили ключ раніше? Додайте його, щоб він зберігався в кабінеті.</p>
+      </div>
+
+      <div class="acc-side">
+        <div class="acc-card trial-card" id="trialCard">
+          <h2>🎁 7 днів безкоштовно</h2>
+          <p class="muted">Один пробний ключ на акаунт і на комп'ютер.</p>
+          <button class="btn btn-primary btn-block" id="trialBtn">Отримати пробний ключ</button>
+        </div>
+        <div class="acc-card">
+          <h2>Як активувати</h2>
+          <ol class="howto">
+            <li>Завантажте програму й запустіть її.</li>
+            <li>Скопіюйте ключ і вставте у вікні активації.</li>
+            <li>Готово — ключ прив'яжеться до цього комп'ютера.</li>
+          </ol>
+          <a href="#" class="btn btn-ghost btn-block" data-download>Завантажити</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="acc-card">
+      <h2>Купити або продовжити</h2>
+      <div class="mini-plans">
+        <button class="mini-plan" data-plan="quarter"><b>3 місяці</b><span data-price="quarter"></span></button>
+        <button class="mini-plan hot" data-plan="year"><b>Рік</b><span data-price="year"></span><em>Найвигідніше</em></button>
+        <button class="mini-plan" data-plan="forever"><b>Назавжди</b><span data-price="forever"></span></button>
+      </div>
+      <p class="muted small" id="payNote">Після оплати ключ з'явиться тут автоматично (зазвичай за хвилину). Оновіть сторінку, якщо його ще немає.</p>
+    </div>
+  </section>
+
+  <p class="muted center" id="loading">Завантаження…</p>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script src="account.js"></script>
+</body>
+</html>

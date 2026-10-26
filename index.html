@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desktop Organizer — порядок на робочому столі за секунду</title>
+<meta name="description" content="Desktop Organizer сам розкладає ярлики по категоріях, замінює панель завдань красивою панеллю, додає віджети, власне меню «Пуск» і ховається в іграх.">
+<link rel="icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Значки (використовуються через <use href="#i-…">) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></symbol>
+  <symbol id="i-game" viewBox="0 0 24 24"><path d="M7 7h10a5 5 0 0 1 4.9 6l-.6 3a2.5 2.5 0 0 1-4.3 1.2L15 15H9l-2 2.2A2.5 2.5 0 0 1 2.7 16l-.6-3A5 5 0 0 1 7 7Z"/><circle cx="16.5" cy="10.5" r="1.1" fill="#0b0b16"/><path d="M7 9.2v3M5.5 10.7h3" stroke="#0b0b16" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 2h8l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path d="M8 12h8M8 16h6" stroke="#0b0b16" stroke-width="1.6" stroke-linecap="round"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="6.5" cy="18" r="3"/><circle cx="17.5" cy="16" r="3"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2" fill="#0b0b16"/><path d="m5 18 5-5 3 3 3-3 3 3" stroke="#0b0b16" stroke-width="1.6" fill="none"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="2" y="5" width="14" height="14" rx="3"/><path d="m16 10 6-4v12l-6-4Z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m20 20-4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5Z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a5 5 0 1 1 .9-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5Z M3 13l9 5 9-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-widget" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="6" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="13" y="11" width="8" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="15" width="8" height="6" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0 0 18c1.2 0 1.8-.8 1.8-1.7 0-1.2-1-1.6-1-2.6 0-.9.7-1.7 1.7-1.7H17a4 4 0 0 0 4-4c0-4.4-4-8-9-8Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="7.5" cy="11" r="1.3"/><circle cx="10.5" cy="7.3" r="1.3"/><circle cx="15" cy="7.8" r="1.3"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-14.6 4.5M4 12A8 8 0 0 1 18.6 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 3v5h-5M5 21v-5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 4l16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 9a15 15 0 0 1 20 0M5.5 12.5a10 10 0 0 1 13 0M9 16a5 5 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/></symbol>
+</svg>
+
+<div class="bg" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="grid-lines"></div>
+</div>
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<!-- ============ Навігація ============ -->
+<header class="nav" id="nav">
+  <a href="#top" class="brand"><img src="favicon.ico" alt="" width="30" height="30"><span>Desktop&nbsp;Organizer</span></a>
+  <nav class="nav-links">
+    <a href="#features">Можливості</a>
+    <a href="#showcase">Огляд</a>
+    <a href="#why">Переваги</a>
+    <a href="#pricing">Ціни</a>
+    <a href="#faq">Питання</a>
+    <a href="account.html" class="m-only">Кабінет</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Мова">
+    <button data-lang="uk">UK</button><button data-lang="ru">RU</button><button data-lang="en">EN</button>
+  </div>
+  <a href="account.html" class="nav-account">Кабінет</a>
+  <a href="#pricing" class="btn btn-primary btn-sm magnetic">Отримати</a>
+  <button class="burger" aria-label="Меню" id="burger"><span></span><span></span></button>
+</header>
+
+<main id="top">
+
+<!-- ============ Перший екран ============ -->
+<section class="hero">
+  <div class="hero-text">
+    <span class="pill reveal"><span class="dot"></span> Нова версія вже доступна</span>
+    <h1 class="reveal">Робочий стіл, який<br><span class="grad" id="typed">наводить лад сам</span><span class="caret">|</span></h1>
+    <p class="lead reveal">Desktop Organizer за секунду розкладає ярлики по категоріях, замінює панель завдань красивою панеллю, додає віджети й власне меню «Пуск» — і повністю зникає, коли ви граєте.</p>
+    <div class="hero-cta reveal">
+      <a href="#pricing" class="btn btn-primary btn-lg magnetic"><span>Купити ключ</span></a>
+      <a href="#" class="btn btn-ghost btn-lg magnetic" data-download><svg class="ic"><use href="#i-down"/></svg><span>Завантажити</span></a>
+    </div>
+    <ul class="hero-points reveal">
+      <li><svg class="ic"><use href="#i-check"/></svg>Windows 10 і 11</li>
+      <li><svg class="ic"><use href="#i-check"/></svg>Українська, русский, English</li>
+      <li><svg class="ic"><use href="#i-check"/></svg>Безпечно для ігор з античитом</li>
+    </ul>
+  </div>
+
+  <!-- Макет робочого столу -->
+  <div class="hero-visual reveal" id="heroVisual">
+    <div class="screen tilt">
+      <div class="wallpaper"></div>
+      <div class="widget w-clock float-slow">
+        <div class="w-time" id="mockTime">12:00</div>
+        <div class="w-date" id="mockDate">понеділок</div>
+      </div>
+      <div class="widget w-sys float-slower">
+        <div class="w-row"><span>CPU</span><b class="bar"><i style="--v:34%"></i></b></div>
+        <div class="w-row"><span>GPU</span><b class="bar"><i style="--v:61%"></i></b></div>
+        <div class="w-row"><span>RAM</span><b class="bar"><i style="--v:48%"></i></b></div>
+      </div>
+      <div class="fences">
+        <div class="fence" style="--d:.2s">
+          <div class="fence-h">🎮 Ігри</div>
+          <div class="tiles">
+            <i class="t c1"><svg><use href="#i-game"/></svg></i><i class="t c2"><svg><use href="#i-game"/></svg></i><i class="t c3"><svg><use href="#i-game"/></svg></i><i class="t c4"><svg><use href="#i-game"/></svg></i>
+          </div>
+        </div>
+        <div class="fence" style="--d:.45s">
+          <div class="fence-h">💼 Робота</div>
+          <div class="tiles">
+            <i class="t c5"><svg><use href="#i-doc"/></svg></i><i class="t c6"><svg><use href="#i-code"/></svg></i><i class="t c7"><svg><use href="#i-folder"/></svg></i><i class="t c8"><svg><use href="#i-image"/></svg></i>
+          </div>
+        </div>
+        <div class="fence" style="--d:.7s">
+          <div class="fence-h">🌐 Інтернет</div>
+          <div class="tiles">
+            <i class="t c9"><svg><use href="#i-globe"/></svg></i><i class="t c10"><svg><use href="#i-chat"/></svg></i><i class="t c11"><svg><use href="#i-music"/></svg></i><i class="t c12"><svg><use href="#i-video"/></svg></i>
+          </div>
+        </div>
+      </div>
+      <div class="dock">
+        <i class="dk sys"><svg><use href="#i-grid"/></svg></i>
+        <i class="dk sys"><svg><use href="#i-search"/></svg></i>
+        <span class="dk-sep"></span>
+        <i class="dk c9 run"><svg><use href="#i-globe"/></svg></i>
+        <i class="dk c10 run"><svg><use href="#i-chat"/></svg></i>
+        <i class="dk c1"><svg><use href="#i-game"/></svg></i>
+        <i class="dk c11 run"><svg><use href="#i-music"/></svg></i>
+        <i class="dk c6"><svg><use href="#i-code"/></svg></i>
+        <i class="dk c7"><svg><use href="#i-folder"/></svg></i>
+        <span class="dk-sep"></span>
+        <span class="dk-clock" id="dockTime">12:00</span>
+      </div>
+    </div>
+    <div class="glow-ring"></div>
+  </div>
+</section>
+
+<!-- ============ Біжучий рядок ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Автосортування ярликів</span><span>★</span><span>Нижня панель</span><span>★</span><span>Меню «Пуск»</span><span>★</span><span>11 віджетів</span><span>★</span><span>Ігровий режим</span><span>★</span><span>Хмарна синхронізація</span><span>★</span><span>Скляні теми</span><span>★</span><span>Миттєвий пошук</span><span>★</span><span>Мікшер гучності</span><span>★</span><span>Гарячі клавіші</span><span>★</span>
+    <span>Автосортування ярликів</span><span>★</span><span>Нижня панель</span><span>★</span><span>Меню «Пуск»</span><span>★</span><span>11 віджетів</span><span>★</span><span>Ігровий режим</span><span>★</span><span>Хмарна синхронізація</span><span>★</span><span>Скляні теми</span><span>★</span><span>Миттєвий пошук</span><span>★</span><span>Мікшер гучності</span><span>★</span><span>Гарячі клавіші</span><span>★</span>
+  </div>
+</div>
+
+<!-- ============ Цифри ============ -->
+<section class="stats">
+  <div class="stat reveal"><b data-count="1" data-suffix="sec">0</b><span>щоб розкласти весь робочий стіл</span></div>
+  <div class="stat reveal"><b data-count="11">0</b><span>віджетів: погода, система, нотатки…</span></div>
+  <div class="stat reveal"><b data-count="3">0</b><span>мови інтерфейсу</span></div>
+  <div class="stat reveal"><b data-count="0" data-suffix="">0</b><span>наших вікон поверх гри</span></div>
+</section>
+
+<!-- ============ До / після ============ -->
+<section class="section" id="compare">
+  <div class="head reveal">
+    <span class="eyebrow">До і після</span>
+    <h2>Потягніть повзунок — і побачите різницю</h2>
+    <p>Сотня ярликів упереміш перетворюється на акуратні категорії. Без ручного перетягування.</p>
+  </div>
+  <div class="compare reveal" id="compareBox">
+    <div class="cmp-layer cmp-after">
+      <div class="wallpaper"></div>
+      <div class="fences small">
+        <div class="fence"><div class="fence-h">🎮 Ігри</div><div class="tiles"><i class="t c1"></i><i class="t c2"></i><i class="t c3"></i><i class="t c4"></i><i class="t c12"></i><i class="t c11"></i></div></div>
+        <div class="fence"><div class="fence-h">💼 Робота</div><div class="tiles"><i class="t c5"></i><i class="t c6"></i><i class="t c7"></i><i class="t c8"></i><i class="t c5"></i><i class="t c6"></i></div></div>
+        <div class="fence"><div class="fence-h">🌐 Інтернет</div><div class="tiles"><i class="t c9"></i><i class="t c10"></i><i class="t c11"></i><i class="t c12"></i><i class="t c9"></i><i class="t c10"></i></div></div>
+        <div class="fence"><div class="fence-h">📁 Документи</div><div class="tiles"><i class="t c7"></i><i class="t c5"></i><i class="t c8"></i><i class="t c7"></i><i class="t c5"></i><i class="t c8"></i></div></div>
+      </div>
+      <span class="cmp-label right">Після</span>
+    </div>
+    <div class="cmp-layer cmp-before" id="cmpBefore">
+      <div class="wallpaper dull"></div>
+      <div class="mess" id="mess"></div>
+      <span class="cmp-label left">До</span>
+    </div>
+    <div class="cmp-handle" id="cmpHandle"><span>⟷</span></div>
+    <input type="range" min="0" max="100" value="50" id="cmpRange" aria-label="Порівняння до і після">
+  </div>
+</section>
+
+<!-- ============ Можливості ============ -->
+<section class="section" id="features">
+  <div class="head reveal">
+    <span class="eyebrow">Можливості</span>
+    <h2>Усе, чого бракує Windows, — в одній програмі</h2>
+    <p>Замість десятка утиліт — один легкий органайзер, який виглядає так, ніби його зробила сама Microsoft. Тільки красивіше.</p>
+  </div>
+  <div class="cards">
+    <article class="card reveal tilt-card"><div class="card-ic g1"><svg><use href="#i-layers"/></svg></div><h3>Категорії на робочому столі</h3><p>Ярлики самі розкладаються по групах: ігри, робота, інтернет, документи. Перетягуйте між категоріями, закріплюйте обране, створюйте портали в будь-яку папку.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g2"><svg><use href="#i-grid"/></svg></div><h3>Нижня панель замість панелі завдань</h3><p>Закріплені й відкриті програми, мініатюри вікон при наведенні, перетягування значків, обране ★, трей, годинник, мова, мережа й гучність.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g3"><svg><use href="#i-star"/></svg></div><h3>Власне меню «Пуск»</h3><p>Привітання, годинник, пошук, закріплені, нещодавні й усі програми. Відкривається клавішею Win з плавною анімацією.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g4"><svg><use href="#i-widget"/></svg></div><h3>11 віджетів</h3><p>Годинник, погода, календар, нотатки, курси валют, система (процесор, відеокарта, температури), диски, мережа, ігровий час і не тільки.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g5"><svg><use href="#i-search"/></svg></div><h3>Миттєвий пошук</h3><p>Програми, файли, ігри Steam і Epic, програми з Microsoft Store — і калькулятор прямо в рядку пошуку.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g6"><svg><use href="#i-eye"/></svg></div><h3>Ігровий режим</h3><p>Запустили гру — усі панелі зникають самі. Жодних оверлеїв над грою, жодних драйверів: Vanguard, VAC, EAC і BattlEye спокійні.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g7"><svg><use href="#i-volume"/></svg></div><h3>Мікшер і трей</h3><p>Гучність кожної програми окремо, значки треї з назвами, перемикання мови й мережі — в оформленні вашої панелі.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g8"><svg><use href="#i-cloud"/></svg></div><h3>Хмарна синхронізація</h3><p>Перевстановили Windows чи купили новий ПК? Введіть ключ — і категорії, панель та віджети повернуться.</p></article>
+    <article class="card reveal tilt-card"><div class="card-ic g9"><svg><use href="#i-palette"/></svg></div><h3>Теми й скло</h3><p>Акрилове скло, власні кольори, заокруглення, прозорість, розмір значків. Налаштуйте під себе кожну панель.</p></article>
+  </div>
+</section>
+
+<!-- ============ Інтерактивний огляд ============ -->
+<section class="section" id="showcase">
+  <div class="head reveal">
+    <span class="eyebrow">Огляд</span>
+    <h2>Подивіться, як це виглядає</h2>
+  </div>
+  <div class="tabs reveal" role="tablist">
+    <button class="tab active" data-tab="0">Меню «Пуск»</button>
+    <button class="tab" data-tab="1">Нижня панель</button>
+    <button class="tab" data-tab="2">Віджети</button>
+    <button class="tab" data-tab="3">Пошук</button>
+    <span class="tab-ink" id="tabInk"></span>
+  </div>
+  <div class="panes reveal">
+    <!-- Пуск -->
+    <div class="pane active">
+      <figure class="shot-frame"><img class="shot" data-shot="start.jpg" alt="" loading="lazy"></figure>
+      <div class="pane-text">
+        <h3>Меню «Пуск», яке хочеться відкривати</h3>
+        <ul class="checks">
+          <li><svg class="ic"><use href="#i-check"/></svg>Клавіша Win відкриває саме його, сполучення Win+E, Win+D працюють як завжди</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Пошук стрілками й Enter, пошук в Інтернеті, якщо програми немає</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Швидкі папки, нещодавні файли, сон, блокування, перезавантаження</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Правий клік: від імені адміністратора, розташування файлу, закріпити</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Панель -->
+    <div class="pane">
+      <figure class="shot-frame wide"><img class="shot" data-shot="dock.jpg" alt="" loading="lazy"></figure>
+      <div class="pane-text">
+        <h3>Панель, як у macOS, але для Windows</h3>
+        <ul class="checks">
+          <li><svg class="ic"><use href="#i-check"/></svg>Значки збільшуються під курсором, перетягуються мишею</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Мініатюри відкритих вікон, «Згорнути» й «Закрити» з правого кліку</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Знизу, зверху, зліва чи справа; будь-яка довжина й масштаб</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Може повністю замінити панель завдань Windows</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Віджети -->
+    <div class="pane">
+      <figure class="shot-frame"><img class="shot" data-shot="desktop.jpg" alt="" loading="lazy"></figure>
+      <div class="pane-text">
+        <h3>Віджети, які справді корисні</h3>
+        <ul class="checks">
+          <li><svg class="ic"><use href="#i-check"/></svg>Температура процесора й відеокарти, навантаження, пам'ять</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Ресурс SSD і вільне місце на дисках</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Скільки ви сьогодні грали — по кожній грі</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Розставляйте мишею будь-де на робочому столі</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Пошук -->
+    <div class="pane">
+      <figure class="shot-frame"><img class="shot" data-shot="search.jpg" alt="" loading="lazy"></figure>
+      <div class="pane-text">
+        <h3>Знайдіть що завгодно за пів секунди</h3>
+        <ul class="checks">
+          <li><svg class="ic"><use href="#i-check"/></svg>Одна гаряча клавіша — і пошук уже перед вами</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Програми, ігри Steam/Epic, файли, налаштування</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Вбудований калькулятор</li>
+          <li><svg class="ic"><use href="#i-check"/></svg>Нечіткий пошук: «tg» знайде Telegram</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Справжні знімки ============ -->
+<section class="section" id="gallery">
+  <div class="head reveal">
+    <span class="eyebrow">Скріншоти</span>
+    <h2>Так програма виглядає насправді</h2>
+    <p>Справжні знімки екрана, без монтажу. Натисніть, щоб збільшити.</p>
+  </div>
+  <div class="gallery">
+    <figure class="g-item g-wide reveal"><img class="shot" data-shot="desktop.jpg" alt="" loading="lazy"><figcaption>Робочий стіл з категоріями й віджетами</figcaption></figure>
+    <figure class="g-item g-wide reveal"><img class="shot" data-shot="dock.jpg" alt="" loading="lazy"><figcaption>Нижня панель замість панелі завдань</figcaption></figure>
+    <figure class="g-item reveal"><img class="shot" data-shot="start.jpg" alt="" loading="lazy"><figcaption>Меню «Пуск»</figcaption></figure>
+    <figure class="g-item reveal"><img class="shot" data-shot="search.jpg" alt="" loading="lazy"><figcaption>Швидкий пошук</figcaption></figure>
+    <figure class="g-item reveal"><img class="shot" data-shot="mediabar.jpg" alt="" loading="lazy"><figcaption>Музична панель</figcaption></figure>
+    <figure class="g-item reveal"><img class="shot" data-shot="settings.jpg" alt="" loading="lazy"><figcaption>Налаштування</figcaption></figure>
+    <figure class="g-item reveal"><img class="shot" data-shot="tutorial.jpg" alt="" loading="lazy"><figcaption>Навчання для новачків</figcaption></figure>
+  </div>
+</section>
+<div class="lightbox" id="lightbox" hidden><img alt=""><button aria-label="Закрити">✕</button></div>
+
+<!-- ============ Переваги ============ -->
+<section class="section" id="why">
+  <div class="head reveal">
+    <span class="eyebrow">Чому саме ми</span>
+    <h2>Зроблено для тих, хто багато сидить за ПК</h2>
+  </div>
+  <div class="why">
+    <div class="why-item reveal"><div class="why-ic"><svg><use href="#i-shield"/></svg></div><div><h3>Безпечно для ігор</h3><p>Жодних драйверів ядра й хуків у чужі процеси. Під час гри органайзер ховає всі свої вікна, тож античит не бачить нічого підозрілого.</p></div></div>
+    <div class="why-item reveal"><div class="why-ic"><svg><use href="#i-bolt"/></svg></div><div><h3>Легкий і швидкий</h3><p>Один файл без встановлення залежностей. Меню відкриваються миттєво, значки вантажаться у фоні.</p></div></div>
+    <div class="why-item reveal"><div class="why-ic"><svg><use href="#i-refresh"/></svg></div><div><h3>Оновлюється сам</h3><p>Нові можливості приходять автоматично — програма сама завантажить і встановить оновлення.</p></div></div>
+    <div class="why-item reveal"><div class="why-ic"><svg><use href="#i-eye"/></svg></div><div><h3>Приватність</h3><p>Ваші файли нікуди не надсилаються. У хмару йдуть лише налаштування — і тільки під вашим ключем.</p></div></div>
+    <div class="why-item reveal"><div class="why-ic"><svg><use href="#i-key"/></svg></div><div><h3>Гарячі клавіші</h3><p>Пошук, робочий стіл, панель, медіа-панель — усе на клавішах, які ви оберете самі.</p></div></div>
+    <div class="why-item reveal"><div class="why-ic"><svg><use href="#i-chat"/></svg></div><div><h3>Живий розробник</h3><p>Знайшли помилку чи маєте ідею? Надішліть прямо з програми — ми читаємо кожне повідомлення.</p></div></div>
+  </div>
+</section>
+
+<!-- ============ Як почати ============ -->
+<section class="section" id="how">
+  <div class="head reveal">
+    <span class="eyebrow">Як почати</span>
+    <h2>Три кроки до чистого робочого столу</h2>
+  </div>
+  <ol class="steps">
+    <li class="step reveal"><span class="step-n">1</span><h3>Отримайте ключ</h3><p>Створіть акаунт і оберіть тариф — ключ з'явиться в особистому кабінеті.</p></li>
+    <li class="step reveal"><span class="step-n">2</span><h3>Завантажте програму</h3><p>Один файл, без встановлювача. Запустіть і введіть ключ.</p></li>
+    <li class="step reveal"><span class="step-n">3</span><h3>Насолоджуйтесь</h3><p>Майстер першого запуску сам розкладе ярлики й покаже, що де.</p></li>
+  </ol>
+</section>
+
+<!-- ============ Ціни ============ -->
+<section class="section" id="pricing">
+  <div class="head reveal">
+    <span class="eyebrow">Ціни</span>
+    <h2>Оберіть свій тариф</h2>
+    <p>Усі можливості в кожному тарифі. Різниця лише в терміні дії.</p>
+  </div>
+  <div class="plans">
+    <div class="plan reveal">
+      <h3>3 місяці</h3>
+      <div class="price"><b data-price="quarter"></b><span>/ 90 днів</span></div>
+      <ul class="checks"><li><svg class="ic"><use href="#i-check"/></svg>Усі можливості</li><li><svg class="ic"><use href="#i-check"/></svg>Оновлення</li><li><svg class="ic"><use href="#i-check"/></svg>Хмарна синхронізація</li></ul>
+      <a href="#" class="btn btn-ghost btn-block" data-buy="quarter">Обрати</a>
+    </div>
+    <div class="plan plan-hot reveal">
+      <span class="badge">Найвигідніше</span>
+      <h3>Рік</h3>
+      <div class="price"><b data-price="year"></b><span>/ 365 днів</span></div>
+      <ul class="checks"><li><svg class="ic"><use href="#i-check"/></svg>Усі можливості</li><li><svg class="ic"><use href="#i-check"/></svg>Оновлення</li><li><svg class="ic"><use href="#i-check"/></svg>Хмарна синхронізація</li><li><svg class="ic"><use href="#i-check"/></svg><span>Економія <b data-save></b> проти оплати за 3 місяці</span></li></ul>
+      <a href="#" class="btn btn-primary btn-block magnetic" data-buy="year">Обрати</a>
+    </div>
+    <div class="plan reveal">
+      <h3>Назавжди</h3>
+      <div class="price"><b data-price="forever"></b><span>один раз</span></div>
+      <ul class="checks"><li><svg class="ic"><use href="#i-check"/></svg>Усі можливості</li><li><svg class="ic"><use href="#i-check"/></svg>Оновлення назавжди</li><li><svg class="ic"><use href="#i-check"/></svg>Хмарна синхронізація</li><li><svg class="ic"><use href="#i-check"/></svg>Без підписок і продовжень</li></ul>
+      <a href="#" class="btn btn-ghost btn-block" data-buy="forever">Обрати</a>
+    </div>
+  </div>
+  <div class="trial reveal">
+    <div class="trial-ic">🎁</div>
+    <div class="trial-text"><b>7 днів безкоштовно</b><span>Створіть акаунт — і пробний ключ з'явиться в особистому кабінеті одразу.</span></div>
+    <a href="#" class="btn btn-primary magnetic" data-trial>Спробувати безкоштовно</a>
+  </div>
+</section>
+
+<!-- ============ Питання ============ -->
+<section class="section" id="faq">
+  <div class="head reveal">
+    <span class="eyebrow">Питання</span>
+    <h2>Часті запитання</h2>
+  </div>
+  <div class="faq">
+    <details class="reveal"><summary>Мене не забанять у Valorant чи CS2?</summary><p>Програму зроблено з урахуванням античитів: вона не використовує драйвери ядра й не втручається в процеси ігор. Під час гри всі її вікна ховаються, а перехоплення клавіш вимикається повністю.</p></details>
+    <details class="reveal"><summary>Що буде з моїми ярликами?</summary><p>Файли лишаються на місці — органайзер лише показує їх у категоріях. Вимкнули програму — робочий стіл такий, як був.</p></details>
+    <details class="reveal"><summary>Чи можна залишити звичайну панель завдань Windows?</summary><p>Так. Заміна панелі завдань і власне меню «Пуск» вмикаються окремо в налаштуваннях — за замовчуванням Windows виглядає як звикли.</p></details>
+    <details class="reveal"><summary>Скільки комп'ютерів на один ключ?</summary><p>Ключ прив'язується до одного комп'ютера. Купили новий ПК — напишіть нам, і ми перенесемо ключ.</p></details>
+    <details class="reveal"><summary>Програма гальмує систему?</summary><p>Ні. Вона легка, а дані про систему для віджетів читає без важких служб і драйверів.</p></details>
+    <details class="reveal"><summary>Як отримати оновлення?</summary><p>Автоматично: програма сама перевіряє нові версії й пропонує оновитися в один клік.</p></details>
+  </div>
+</section>
+
+<!-- ============ Фінальний заклик ============ -->
+<section class="final reveal">
+  <h2>Наведіть лад на робочому столі<br><span class="grad">вже сьогодні</span></h2>
+  <p>Хвилина на встановлення — і ви більше не шукатимете ярлики.</p>
+  <div class="hero-cta center">
+    <a href="#pricing" class="btn btn-primary btn-lg magnetic">Купити ключ</a>
+    <a href="#" class="btn btn-ghost btn-lg magnetic" data-download><svg class="ic"><use href="#i-down"/></svg>Завантажити</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="brand"><img src="favicon.ico" alt="" width="24" height="24"><span>Desktop Organizer</span></div>
+  <span>© <span id="year"></span> Desktop Organizer. Усі права захищено.</span>
+  <a href="#" data-contact>Зв'язатися з нами</a>
+</footer>
+
+<script src="config.js"></script>
+<script src="i18n.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
